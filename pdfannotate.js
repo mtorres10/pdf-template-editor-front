@@ -170,6 +170,11 @@ PDFAnnotate.prototype.enableRectangle = function () {
 		strokeSize: inst.borderSize,
 		strokeUniform: true,
 	});
+	
+	rect.on('mousedown', function(e) { 
+        console.log("Clicked rectangle\nRectangle properties:" + e.target );
+    });
+	
 	fabricObj.add(rect);
 }
 
