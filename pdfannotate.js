@@ -74,6 +74,7 @@ var PDFAnnotate = function (container_id, url, options = {}) {
 		canvases.each(function (index, el) {
 			var background = el.toDataURL("image/png");
 			var fabricObj = new fabric.Canvas(el.id, {
+				uniformScaling: false,
 				freeDrawingBrush: {
 					width: 1,
 					color: inst.color
@@ -175,6 +176,11 @@ PDFAnnotate.prototype.enableRectangle = function () {
 		expectedValue: "",
 		coordinatesType: "Pixels"
 	});
+
+	rect.controls = {
+		...fabric.Text.prototype.controls,
+		mtr: new fabric.Control({ visible: false })
+	}
 
 	fabric.Object.prototype.toObject = (function (toObject) {
 		return function () {
