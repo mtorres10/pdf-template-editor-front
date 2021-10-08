@@ -23,20 +23,19 @@ function selectFile() {
 }
 
 function load(pdfcontent) {
+    var canvasContainers = document.querySelectorAll("[class='canvas-container']");
 
-    var canvasContainers = document.getElementsByClassName("canvas-container");
-    var c2 = document.querySelectorAll("[class=canvas-container]");
-   // for (c in canvasContainers) {
-    //    c.parentNode.removeChild(c);
-   // }
-    //$['class=canvas-container'].remove()
+    for (i = 0; i < canvasContainers.length; ++i) {
+        let canvasContainer = canvasContainers[i];
+        canvasContainer.parentNode.removeChild(canvasContainer);
+    }
+
     pdf = new PDFAnnotate("pdf-container", pdfcontent, {
         onPageUpdated(page, oldData, newData) {
             console.log(page, oldData, newData);
         },
         ready() {
             console.log("Plugin initialized successfully");
-            //pdf.loadFromJSON(sampleOutput);
         },
         scale: 1.5,
         pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
