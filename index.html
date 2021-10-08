@@ -7,56 +7,22 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
 	<link rel="stylesheet" href="./styles.css">
 	<link rel="stylesheet" href="./pdfannotate.css">
+	
 </head>
 <body>
 <div class="toolbar">
 	<div class="tool">
 		<span>PDF template editor</span>
 	</div>
-	<!--<div class="tool">
-		<label for="">Brush size</label>
-		<input type="number" class="form-control text-right" value="1" id="brush-size" max="50">
-	</div>
-	<div class="tool">
-		<label for="">Font size</label>
-		<select id="font-size" class="form-control">
-			<option value="10">10</option>
-			<option value="12">12</option>
-			<option value="16" selected>16</option>
-			<option value="18">18</option>
-			<option value="24">24</option>
-			<option value="32">32</option>
-			<option value="48">48</option>
-			<option value="64">64</option>
-			<option value="72">72</option>
-			<option value="108">108</option>
-		</select>
-	</div>
-	<div class="tool">
-		<button class="color-tool active" style="background-color: #212121;"></button>
-		<button class="color-tool" style="background-color: red;"></button>
-		<button class="color-tool" style="background-color: blue;"></button>
-		<button class="color-tool" style="background-color: green;"></button>
-		<button class="color-tool" style="background-color: yellow;"></button>
-	</div>-->
+	
 	<div class="tool">
 		<button class="tool-button active"><i class="fa fa-hand-paper-o" title="Free Hand" onclick="enableSelector(event)"></i></button>
 	</div>
-	<!--<div class="tool">
-		<button class="tool-button"><i class="fa fa-pencil" title="Pencil" onclick="enablePencil(event)"></i></button>
-	</div>-->
-	<!--<div class="tool">
-		<button class="tool-button"><i class="fa fa-font" title="Add Text" onclick="enableAddText(event)"></i></button>
-	</div>-->
-	<!--<div class="tool">
-		<button class="tool-button"><i class="fa fa-long-arrow-right" title="Add Arrow" onclick="enableAddArrow(event)"></i></button>
-	</div>-->
+	
 	<div class="tool">
 		<button class="tool-button"><i class="fa fa-square-o" title="Add rectangle" onclick="enableRectangle(event)"></i></button>
 	</div>
-	<!--<div class="tool">
-		<button class="tool-button"><i class="fa fa-picture-o" title="Add an Image" onclick="addImage(event)"></i></button>
-	</div>-->
+	
 	<div class="tool">
 		<button class="btn btn-danger btn-sm" onclick="deleteSelectedObject(event)"><i class="fa fa-trash"></i></button>
 	</div>
@@ -67,8 +33,27 @@
 		<button class="btn btn-info btn-sm" onclick="showPdfData()">{}</button>
 	</div>
 	<div class="tool">
-		<button class="btn btn-light btn-sm" onclick="savePDF()"><i class="fa fa-save"></i> Save</button>
+		<button id="download" class="btn btn-light btn-sm" onclick="getPdfData()"><i class="fa fa-save"></i> Save</button>
 	</div>
+</div>
+
+<div class="sidenav">
+	<div class="form-group">
+		<label for="exampleInputEmail1">Field</label>
+		<input type="text" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter expected value" size="30">
+	</div>
+	<div class="form-group">
+		<label for="exampleInputEmail1">Section</label>
+		<input type="text" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter expected field" size="30">
+	</div>
+	<div class="form-group">
+		<label for="exampleInputEmail1">Expected Value</label>
+		<textarea id="expectedValue" name="subject" placeholder="Write something.."></textarea>
+	</div>
+	<div class="form-group"></div>
+		<button class="button">Save</button>
+	</div>
+
 </div>
 <div id="pdf-container"></div>
 
@@ -101,5 +86,6 @@
 <script src="./sample_output.js"></script>
 <script src="./pdfannotate.js"></script>
 <script src="./script.js"></script>
+
 </body>
 </html>

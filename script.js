@@ -65,6 +65,11 @@ function savePDF() {
     pdf.savePdf('output.pdf'); // save with given file name
 }
 
+function inputHandler(e) {
+    // pdf.savePdf();
+    pdf.inputHandler(e); // save with given file name
+}
+
 function clearPage() {
     pdf.clearActivePage();
 }
@@ -78,6 +83,43 @@ function showPdfData() {
         $('#dataModal').modal('show');
     });
 }
+
+function getPdfData() {
+    var json = pdf.serializePdf(function (string) {
+        //console.log(JSON.stringify(JSON.parse(string), null, 4));
+        var text = JSON.stringify(JSON.parse(string), null, 4);
+        download(text,"template.json","text/json");
+    });
+}
+
+function download(text, name, type) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', name);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+   /* var a = document.getElementById("a");
+    var file = new Blob([text], {type: type});
+    a.href = URL.createObjectURL(file);
+    a.download = name;
+    a.click;*/
+}
+
+
+
+
+    const source = document.getElementById('expectedValue');
+
+
+    
+    source.addEventListener('input', inputHandler);
+    source.addEventListener('propertychange', inputHandler);
+
 
 $(function () {
     $('.color-tool').click(function () {
