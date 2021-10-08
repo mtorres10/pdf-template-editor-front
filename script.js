@@ -1,15 +1,61 @@
 var jsonTemplateData = JSON.parse("{}");
-var pdf = new PDFAnnotate("pdf-container", "files/file-example_PDF_500_kB.pdf", {
-    onPageUpdated(page, oldData, newData) {
-        console.log(page, oldData, newData);
-    },
-    ready() {
-        console.log("Plugin initialized successfully");
-        pdf.loadFromJSON(jsonTemplateData);
-    },
-    scale: 1.5,
-    pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
-});
+var pdf;
+
+function selectJson() {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.onchange = e => {
+        var file = e.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function () {
+            jsonTemplateData = JSON.parse(reader.result);
+            pdf.loadFromJSON2(jsonTemplateData);
+        }        
+        reader.readAsText(file);        
+    }
+    input.click();
+}
+
+function selectFile() {
+    var input = document.createElement('input');
+    input.type = 'file';
+
+    input.onchange = e => {
+        // getting a hold of the file reference
+        var file = e.target.files[0];
+        // setting up the reader
+        var reader = new FileReader();
+        reader.onload = function () {
+            //Step 4:turn array buffer into typed array
+            var typedarray = new Uint8Array(this.result);
+            //Step 5:pdfjs should be able to read this
+            load(typedarray);
+        }
+        //Step 3:Read the file as ArrayBuffer
+        reader.readAsArrayBuffer(file);
+    }
+    input.click();
+}
+
+function load(pdfcontent) {
+    var canvasContainers = document.querySelectorAll("[class='canvas-container']");
+
+    for (i = 0; i < canvasContainers.length; ++i) {
+        let canvasContainer = canvasContainers[i];
+        canvasContainer.parentNode.removeChild(canvasContainer);
+    }
+
+    pdf = new PDFAnnotate("pdf-container", pdfcontent, {
+        onPageUpdated(page, oldData, newData) {
+            console.log(page, oldData, newData);
+        },
+        ready() {
+            console.log("Plugin initialized successfully");
+        },
+        scale: 1.5,
+        pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
+    });
+}
 
 function changeActiveTool(event) {
     var element = $(event.target).hasClass("tool-button")
