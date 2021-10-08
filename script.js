@@ -65,6 +65,11 @@ function savePDF() {
     pdf.savePdf('output.pdf'); // save with given file name
 }
 
+function inputHandler(e) {
+    // pdf.savePdf();
+    pdf.inputHandler(e); // save with given file name
+}
+
 function clearPage() {
     pdf.clearActivePage();
 }
@@ -104,6 +109,17 @@ function download(text, name, type) {
     a.download = name;
     a.click;*/
 }
+
+
+
+
+    const source = document.getElementById('expectedValue');
+
+
+    
+    source.addEventListener('input', inputHandler);
+    source.addEventListener('propertychange', inputHandler);
+
 
 $(function () {
     $('.color-tool').click(function () {

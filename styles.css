@@ -94,7 +94,7 @@ button:focus {
 
 .sidenav {
     width: 240px;
-    height: 370px;
+    height: 400px;
     position: fixed;
     z-index: 1;
     top: 90px;
@@ -132,6 +132,21 @@ button:focus {
   
   .sidenav a:hover {
     color: #064579;
+  }
+
+  .button {
+    background-color: red; /* Green */
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 9px;
   }
   
   @media screen and (max-height: 450px) {

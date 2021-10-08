@@ -74,6 +74,7 @@ var PDFAnnotate = function (container_id, url, options = {}) {
 		canvases.each(function (index, el) {
 			var background = el.toDataURL("image/png");
 			var fabricObj = new fabric.Canvas(el.id, {
+				uniformScaling: false,
 				freeDrawingBrush: {
 					width: 1,
 					color: inst.color
@@ -118,7 +119,7 @@ var PDFAnnotate = function (container_id, url, options = {}) {
 		}
 		var activeObject = inst.fabricObjects[inst.active_canvas].getActiveObject();
 		console.log(activeObject);
-		document.getElementById('sectionField').value = activeObject.top;
+		document.getElementById('expectedValue').value = activeObject.expectedValue;
 	}
 }
 
@@ -172,7 +173,34 @@ PDFAnnotate.prototype.enableRectangle = function () {
 		stroke: inst.borderColor,
 		strokeSize: inst.borderSize,
 		strokeUniform: true,
+		fieldName: "",
+		section: "",
+		scale: 1.5,
+		expectedValue: "",
+		coordinatesType: "Pixels"
 	});
+
+	rect.controls = {
+		...fabric.Text.prototype.controls,
+		mtr: new fabric.Control({ visible: false })
+	}
+
+	fabric.Object.prototype.toObject = (function (toObject) {
+		return function () {
+			return fabric.util.object.extend(toObject.call(this), {
+				fieldName: this.fieldName,
+				section: this.section,
+				scale: this.scale,
+				expectedValue: this.expectedValue,
+				coordinatesType: this.coordinatesType
+			});
+		};
+	})(fabric.Object.prototype.toObject);
+
+	rect.on('mousedown', function (e) {
+		console.log("Clicked rectangle\nRectangle properties:" + e.target);
+	});
+
 	fabricObj.add(rect);
 }
 
@@ -340,6 +368,12 @@ PDFAnnotate.prototype.downloadJson = function (callback) {
 		});
 	});
 	
+}
+
+PDFAnnotate.prototype.loadFromJSON.inputHandler = function(e) {
+	//result.innerHTML = e.target.value;
+	let rect = inst.fabricObjects[inst.active_canvas].getActiveObject();
+	rect["expectedValue"]  = e.target.value;
 }
 
 PDFAnnotate.prototype.loadFromJSON = function (jsonData) {
