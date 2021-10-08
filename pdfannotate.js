@@ -120,6 +120,8 @@ var PDFAnnotate = function (container_id, url, options = {}) {
 	}
 }
 
+
+
 PDFAnnotate.prototype.enableSelector = function () {
 	var inst = this;
 	inst.active_tool = 0;
