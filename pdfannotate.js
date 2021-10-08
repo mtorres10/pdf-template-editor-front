@@ -181,7 +181,7 @@ PDFAnnotate.prototype.enableRectangle = function () {
 		strokeSize: inst.borderSize,
 		strokeUniform: true,
 		fieldName: "",
-		section: "",
+		sectionName: "",
 		scale: 1.5,
 		expectedValue: "",
 		coordinatesType: "Pixels"
@@ -196,7 +196,7 @@ PDFAnnotate.prototype.enableRectangle = function () {
 		return function () {
 			return fabric.util.object.extend(toObject.call(this), {
 				fieldName: this.fieldName,
-				section: this.section,
+				sectionName: this.section,
 				scale: this.scale,
 				expectedValue: this.expectedValue,
 				coordinatesType: this.coordinatesType
@@ -382,7 +382,7 @@ PDFAnnotate.prototype.inputHandler = function (e) {
 	//result.innerHTML = e.target.value;
 	var inst = this;
 	let rect = inst.fabricObjects[inst.active_canvas].getActiveObject();
-	rect["expectedValue"] = e.target.value;
+	rect[id] = e.target.value;
 }
 
 PDFAnnotate.prototype.loadFromJSON = function (jsonData) {
@@ -393,7 +393,7 @@ PDFAnnotate.prototype.loadFromJSON = function (jsonData) {
 		return function () {
 			return fabric.util.object.extend(toObject.call(this), {
 				fieldName: this.fieldName,
-				section: this.section,
+				sectionName: this.section,
 				scale: this.scale,
 				expectedValue: this.expectedValue,
 				coordinatesType: this.coordinatesType

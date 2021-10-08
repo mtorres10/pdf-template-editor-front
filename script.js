@@ -172,12 +172,15 @@ function download(text, name, type) {
 
 
 
-const source = document.getElementById('expectedValue');
-
-
-
-source.addEventListener('input', inputHandler);
-source.addEventListener('propertychange', inputHandler);
+const expectedValue = document.getElementById('expectedValue');
+expectedValue.addEventListener('input', inputHandler);
+expectedValue.addEventListener('propertychange', inputHandler);
+const sectionName = document.getElementById('sectionName');
+sectionName.addEventListener('input', inputHandler);
+sectionName.addEventListener('propertychange', inputHandler);
+const fieldName = document.getElementById('fieldName');
+fieldName.addEventListener('input', inputHandler);
+fieldName.addEventListener('propertychange', inputHandler);
 
 
 $(function () {
