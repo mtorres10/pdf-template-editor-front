@@ -169,12 +169,27 @@ PDFAnnotate.prototype.enableRectangle = function () {
 		stroke: inst.borderColor,
 		strokeSize: inst.borderSize,
 		strokeUniform: true,
+		fieldName: "",
+		section: "",
+		scale: 1.5,
+		expectedText: ""
 	});
-	
-	rect.on('mousedown', function(e) { 
-        console.log("Clicked rectangle\nRectangle properties:" + e.target );
-    });
-	
+
+	fabric.Object.prototype.toObject = (function (toObject) {
+		return function () {
+			return fabric.util.object.extend(toObject.call(this), {
+				fieldName: this.fieldName,
+				section: this.section,
+				scale: this.scale,
+				expectedText: this.expectedText
+			});
+		};
+	})(fabric.Object.prototype.toObject);
+
+	rect.on('mousedown', function (e) {
+		console.log("Clicked rectangle\nRectangle properties:" + e.target);
+	});
+
 	fabricObj.add(rect);
 }
 
