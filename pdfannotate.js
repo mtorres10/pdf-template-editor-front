@@ -172,7 +172,8 @@ PDFAnnotate.prototype.enableRectangle = function () {
 		fieldName: "",
 		section: "",
 		scale: 1.5,
-		expectedText: ""
+		expectedValue: "",
+		coordinatesType: "Pixels"
 	});
 
 	fabric.Object.prototype.toObject = (function (toObject) {
