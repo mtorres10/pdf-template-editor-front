@@ -1,45 +1,52 @@
 var jsonTemplateData = JSON.parse("{}");
+var pdf;
 
-function selectFile(){
-	var input = document.createElement('input');
-	input.type = 'file';
+function selectFile() {
+    var input = document.createElement('input');
+    input.type = 'file';
 
-	input.onchange = e => { 
-		// getting a hold of the file reference
-   		var file = e.target.files[0];
-		// setting up the reader
-		var reader = new FileReader();
-        reader.onload = function(){
-        //Step 4:turn array buffer into typed array
-        var typedarray = new Uint8Array(this.result);
-        //Step 5:pdfjs should be able to read this
-        load(typedarray);
+    input.onchange = e => {
+        // getting a hold of the file reference
+        var file = e.target.files[0];
+        // setting up the reader
+        var reader = new FileReader();
+        reader.onload = function () {
+            //Step 4:turn array buffer into typed array
+            var typedarray = new Uint8Array(this.result);
+            //Step 5:pdfjs should be able to read this
+            load(typedarray);
         }
         //Step 3:Read the file as ArrayBuffer
         reader.readAsArrayBuffer(file);
-	}
-	input.click();
+    }
+    input.click();
 }
 
-function load(pdfcontent){
+function load(pdfcontent) {
 
-    var pdf = new PDFAnnotate("pdf-container", pdfcontent, {
+    var canvasContainers = document.getElementsByClassName("canvas-container");
+    var c2 = document.querySelectorAll("[class=canvas-container]");
+   // for (c in canvasContainers) {
+    //    c.parentNode.removeChild(c);
+   // }
+    //$['class=canvas-container'].remove()
+    pdf = new PDFAnnotate("pdf-container", pdfcontent, {
         onPageUpdated(page, oldData, newData) {
-          console.log(page, oldData, newData);
+            console.log(page, oldData, newData);
         },
         ready() {
-          console.log("Plugin initialized successfully");
-          //pdf.loadFromJSON(sampleOutput);
+            console.log("Plugin initialized successfully");
+            //pdf.loadFromJSON(sampleOutput);
         },
         scale: 1.5,
         pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
-      });
+    });
 }
 
 function changeActiveTool(event) {
     var element = $(event.target).hasClass("tool-button")
-      ? $(event.target)
-      : $(event.target).parents(".tool-button").first();
+        ? $(event.target)
+        : $(event.target).parents(".tool-button").first();
     $(".tool-button.active").removeClass("active");
     $(element).addClass("active");
 }
@@ -82,8 +89,8 @@ function enableRectangle(event) {
 }
 
 function deleteSelectedObject(event) {
-  event.preventDefault();
-  pdf.deleteSelectedObject();
+    event.preventDefault();
+    pdf.deleteSelectedObject();
 }
 
 function savePDF() {
@@ -98,8 +105,8 @@ function clearPage() {
 function showPdfData() {
     pdf.serializePdf(function (string) {
         $("#dataModal .modal-body pre")
-          .first()
-          .text(JSON.stringify(JSON.parse(string), null, 4));
+            .first()
+            .text(JSON.stringify(JSON.parse(string), null, 4));
         PR.prettyPrint();
         $('#dataModal').modal('show');
     });
