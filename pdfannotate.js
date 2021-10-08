@@ -121,8 +121,12 @@ var PDFAnnotate = function (container_id, url, options = {}) {
 		//console.log(activeObject);
 		if (activeObject) {
 			document.getElementById('expectedValue').value = activeObject.expectedValue;
+			document.getElementById('sectionName').value = activeObject.sectionName;
+			document.getElementById('fieldName').value = activeObject.fieldName;
 		} else {
 			document.getElementById('expectedValue').value = '';
+			document.getElementById('sectionName').value = '';
+			document.getElementById('fieldName').value = '';
 		}
 
 	}
@@ -196,7 +200,7 @@ PDFAnnotate.prototype.enableRectangle = function () {
 		return function () {
 			return fabric.util.object.extend(toObject.call(this), {
 				fieldName: this.fieldName,
-				sectionName: this.section,
+				sectionName: this.sectionName,
 				scale: this.scale,
 				expectedValue: this.expectedValue,
 				coordinatesType: this.coordinatesType
@@ -382,7 +386,7 @@ PDFAnnotate.prototype.inputHandler = function (e) {
 	//result.innerHTML = e.target.value;
 	var inst = this;
 	let rect = inst.fabricObjects[inst.active_canvas].getActiveObject();
-	rect[id] = e.target.value;
+	rect[e.target.id] = e.target.value;
 }
 
 PDFAnnotate.prototype.loadFromJSON = function (jsonData) {
