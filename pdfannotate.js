@@ -118,8 +118,13 @@ var PDFAnnotate = function (container_id, url, options = {}) {
 			inst.active_tool = 0;
 		}
 		var activeObject = inst.fabricObjects[inst.active_canvas].getActiveObject();
-		console.log(activeObject);
-		document.getElementById('expectedValue').value = activeObject.expectedValue;
+		//console.log(activeObject);
+		if (activeObject) {
+			document.getElementById('expectedValue').value = activeObject.expectedValue;
+		} else {
+			document.getElementById('expectedValue').value = '';
+		}
+
 	}
 }
 
@@ -199,6 +204,7 @@ PDFAnnotate.prototype.enableRectangle = function () {
 
 	rect.on('mousedown', function (e) {
 		console.log("Clicked rectangle\nRectangle properties:" + e.target);
+		//document.getElementById('expectedValue').value = e.target["expectedValue"];
 	});
 
 	fabricObj.add(rect);
@@ -344,7 +350,7 @@ PDFAnnotate.prototype.serializePdf = function (callback) {
 		});
 	});
 }
- //Agregado
+//Agregado
 PDFAnnotate.prototype.downloadJson = function (callback) {
 	var inst = this;
 	var pageAnnotations = [];
@@ -367,20 +373,20 @@ PDFAnnotate.prototype.downloadJson = function (callback) {
 			}
 		});
 	});
-	
+
 }
 
-PDFAnnotate.prototype.inputHandler = function(e) {
+PDFAnnotate.prototype.inputHandler = function (e) {
 	//result.innerHTML = e.target.value;
 	var inst = this;
 	let rect = inst.fabricObjects[inst.active_canvas].getActiveObject();
-	rect["expectedValue"]  = e.target.value;
+	rect["expectedValue"] = e.target.value;
 }
 
 PDFAnnotate.prototype.loadFromJSON = function (jsonData) {
 	var inst = this;
 	var { page_setup, pages } = jsonData;
-	
+
 	fabric.Object.prototype.toObject = (function (toObject) {
 		return function () {
 			return fabric.util.object.extend(toObject.call(this), {
@@ -414,7 +420,7 @@ PDFAnnotate.prototype.loadFromJSON = function (jsonData) {
 PDFAnnotate.prototype.loadFromJSON2 = function (jsonData) {
 	var inst = this;
 	var { page_setup, pages } = jsonData;
-	
+
 	fabric.Object.prototype.toObject = (function (toObject) {
 		return function () {
 			return fabric.util.object.extend(toObject.call(this), {
@@ -438,11 +444,7 @@ PDFAnnotate.prototype.loadFromJSON2 = function (jsonData) {
 	}
 	$.each(inst.fabricObjects, function (index, fabricObj) {
 		if (pages.length > index) {
-			
 			var bg = fabricObj.backgroundImage;
-	
-				
-			
 			fabricObj.loadFromJSON(pages[index], function () {
 				inst.fabricObjectsData[index] = fabricObj.toJSON()
 			})
