@@ -30,8 +30,14 @@
 		<button class="btn btn-danger btn-sm" onclick="clearPage()">Clear Page</button>
 	</div>
 	<div class="tool">
-		<button class="btn btn-info btn-sm" onclick="showPdfData()">{}</button>
+		<button class="btn btn-info btn-sm" onclick="showPdfData()">Template Data</button>
 	</div>
+	<div class="tool">
+		
+		<input type="file" name="inputfile" id="inputfile" onchange="readJson(this)">
+	</div>
+	
+
 	<div class="tool">
 		<button id="download" class="btn btn-light btn-sm" onclick="getPdfData()"><i class="fa fa-save"></i> Save</button>
 	</div>

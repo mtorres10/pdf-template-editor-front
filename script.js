@@ -1,19 +1,20 @@
+var jsonTemplateData = JSON.parse("{}");
 var pdf = new PDFAnnotate("pdf-container", "files/file-example_PDF_500_kB.pdf", {
-  onPageUpdated(page, oldData, newData) {
-    console.log(page, oldData, newData);
-  },
-  ready() {
-    console.log("Plugin initialized successfully");
-    //pdf.loadFromJSON(sampleOutput);
-  },
-  scale: 1.5,
-  pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
+    onPageUpdated(page, oldData, newData) {
+        console.log(page, oldData, newData);
+    },
+    ready() {
+        console.log("Plugin initialized successfully");
+        pdf.loadFromJSON(jsonTemplateData);
+    },
+    scale: 1.5,
+    pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
 });
 
 function changeActiveTool(event) {
     var element = $(event.target).hasClass("tool-button")
-      ? $(event.target)
-      : $(event.target).parents(".tool-button").first();
+        ? $(event.target)
+        : $(event.target).parents(".tool-button").first();
     $(".tool-button.active").removeClass("active");
     $(element).addClass("active");
 }
@@ -56,8 +57,8 @@ function enableRectangle(event) {
 }
 
 function deleteSelectedObject(event) {
-  event.preventDefault();
-  pdf.deleteSelectedObject();
+    event.preventDefault();
+    pdf.deleteSelectedObject();
 }
 
 function savePDF() {
@@ -77,18 +78,30 @@ function clearPage() {
 function showPdfData() {
     pdf.serializePdf(function (string) {
         $("#dataModal .modal-body pre")
-          .first()
-          .text(JSON.stringify(JSON.parse(string), null, 4));
+            .first()
+            .text(JSON.stringify(JSON.parse(string), null, 4));
         PR.prettyPrint();
         $('#dataModal').modal('show');
     });
+}
+
+function readJson(fileReader) {
+    var fr = new FileReader();
+
+    fr.onload = function () {
+        //document.getElementById('output').textContent = fr.result;
+        jsonTemplateData = JSON.parse(fr.result);
+        pdf.loadFromJSON2(jsonTemplateData);
+    }
+    fr.readAsText(fileReader.files[0]);
+
 }
 
 function getPdfData() {
     var json = pdf.serializePdf(function (string) {
         //console.log(JSON.stringify(JSON.parse(string), null, 4));
         var text = JSON.stringify(JSON.parse(string), null, 4);
-        download(text,"template.json","text/json");
+        download(text, "template.json", "text/json");
     });
 }
 
@@ -103,22 +116,22 @@ function download(text, name, type) {
     element.click();
 
     document.body.removeChild(element);
-   /* var a = document.getElementById("a");
-    var file = new Blob([text], {type: type});
-    a.href = URL.createObjectURL(file);
-    a.download = name;
-    a.click;*/
+    /* var a = document.getElementById("a");
+     var file = new Blob([text], {type: type});
+     a.href = URL.createObjectURL(file);
+     a.download = name;
+     a.click;*/
 }
 
 
 
 
-    const source = document.getElementById('expectedValue');
+const source = document.getElementById('expectedValue');
 
 
-    
-    source.addEventListener('input', inputHandler);
-    source.addEventListener('propertychange', inputHandler);
+
+source.addEventListener('input', inputHandler);
+source.addEventListener('propertychange', inputHandler);
 
 
 $(function () {
