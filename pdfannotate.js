@@ -182,7 +182,8 @@ PDFAnnotate.prototype.enableRectangle = function () {
 				fieldName: this.fieldName,
 				section: this.section,
 				scale: this.scale,
-				expectedText: this.expectedText
+				expectedValue: this.expectedValue,
+				coordinatesType: this.coordinatesType
 			});
 		};
 	})(fabric.Object.prototype.toObject);
