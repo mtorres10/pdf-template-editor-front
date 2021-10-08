@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
 	<link rel="stylesheet" href="./styles.css">
 	<link rel="stylesheet" href="./pdfannotate.css">
+	
 </head>
 <body>
 <div class="toolbar">
@@ -29,14 +30,40 @@
 		<button class="btn btn-danger btn-sm" onclick="clearPage()">Clear Page</button>
 	</div>
 	<div class="tool">
-		<button class="btn btn-info btn-sm" onclick="showPdfData()">{}</button>
+		<button class="btn btn-info btn-sm" onclick="showPdfData()">Template Data</button>
 	</div>
 	<div class="tool">
 		<button class="btn btn-info btn-sm" onclick="selectFile()">Select File</button>
 	</div>
 	<div class="tool">
 		<button class="btn btn-light btn-sm" onclick="savePDF()"><i class="fa fa-save"></i> Save</button>
+		
+		<input type="file" name="inputfile" id="inputfile" onchange="readJson(this)">
 	</div>
+	
+
+	<div class="tool">
+		<button id="download" class="btn btn-light btn-sm" onclick="getPdfData()"><i class="fa fa-save"></i> Save</button>
+	</div>
+</div>
+
+<div class="sidenav">
+	<div class="form-group">
+		<label for="exampleInputEmail1">Field</label>
+		<input type="text" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter expected value" size="30">
+	</div>
+	<div class="form-group">
+		<label for="exampleInputEmail1">Section</label>
+		<input type="text" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter expected field" size="30">
+	</div>
+	<div class="form-group">
+		<label for="exampleInputEmail1">Expected Value</label>
+		<textarea id="expectedValue" name="subject" placeholder="Write something.."></textarea>
+	</div>
+	<div class="form-group"></div>
+		<button class="button">Save</button>
+	</div>
+
 </div>
 <div id="pdf-container"></div>
 
@@ -69,5 +96,6 @@
 <script src="./sample_output.js"></script>
 <script src="./pdfannotate.js"></script>
 <script src="./script.js"></script>
+
 </body>
 </html>

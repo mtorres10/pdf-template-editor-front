@@ -117,6 +117,14 @@ var PDFAnnotate = function (container_id, url, options = {}) {
 			fabricObj.add(text);
 			inst.active_tool = 0;
 		}
+		var activeObject = inst.fabricObjects[inst.active_canvas].getActiveObject();
+		//console.log(activeObject);
+		if (activeObject) {
+			document.getElementById('expectedValue').value = activeObject.expectedValue;
+		} else {
+			document.getElementById('expectedValue').value = '';
+		}
+
 	}
 }
 
@@ -198,6 +206,7 @@ PDFAnnotate.prototype.enableRectangle = function () {
 
 	rect.on('mousedown', function (e) {
 		console.log("Clicked rectangle\nRectangle properties:" + e.target);
+		//document.getElementById('expectedValue').value = e.target["expectedValue"];
 	});
 
 	fabricObj.add(rect);
@@ -343,10 +352,55 @@ PDFAnnotate.prototype.serializePdf = function (callback) {
 		});
 	});
 }
+//Agregado
+PDFAnnotate.prototype.downloadJson = function (callback) {
+	var inst = this;
+	var pageAnnotations = [];
+	var stringJson = "";
+	inst.fabricObjects.forEach(function (fabricObject) {
+		fabricObject.clone(function (fabricObjectCopy) {
+			fabricObjectCopy.setBackgroundImage(null);
+			fabricObjectCopy.setBackgroundColor('');
+			pageAnnotations.push(fabricObjectCopy);
+			if (pageAnnotations.length === inst.fabricObjects.length) {
+				var data = {
+					page_setup: {
+						format: inst.format,
+						orientation: inst.orientation,
+					},
+					pages: pageAnnotations,
+				};
+				callback(JSON.stringify(data));
+				stringJson = (JSON.stringify(data));
+			}
+		});
+	});
+
+}
+
+PDFAnnotate.prototype.inputHandler = function (e) {
+	//result.innerHTML = e.target.value;
+	var inst = this;
+	let rect = inst.fabricObjects[inst.active_canvas].getActiveObject();
+	rect["expectedValue"] = e.target.value;
+}
 
 PDFAnnotate.prototype.loadFromJSON = function (jsonData) {
 	var inst = this;
 	var { page_setup, pages } = jsonData;
+
+	fabric.Object.prototype.toObject = (function (toObject) {
+		return function () {
+			return fabric.util.object.extend(toObject.call(this), {
+				fieldName: this.fieldName,
+				section: this.section,
+				scale: this.scale,
+				expectedValue: this.expectedValue,
+				coordinatesType: this.coordinatesType
+			});
+		};
+	})(fabric.Object.prototype.toObject);
+
 	if (typeof pages === 'undefined') {
 		pages = jsonData;
 	}
@@ -361,6 +415,42 @@ PDFAnnotate.prototype.loadFromJSON = function (jsonData) {
 			fabricObj.loadFromJSON(pages[index], function () {
 				inst.fabricObjectsData[index] = fabricObj.toJSON()
 			})
+		}
+	})
+}
+
+PDFAnnotate.prototype.loadFromJSON2 = function (jsonData) {
+	var inst = this;
+	var { page_setup, pages } = jsonData;
+
+	fabric.Object.prototype.toObject = (function (toObject) {
+		return function () {
+			return fabric.util.object.extend(toObject.call(this), {
+				fieldName: this.fieldName,
+				section: this.section,
+				scale: this.scale,
+				expectedValue: this.expectedValue,
+				coordinatesType: this.coordinatesType
+			});
+		};
+	})(fabric.Object.prototype.toObject);
+
+	if (typeof pages === 'undefined') {
+		pages = jsonData;
+	}
+	if (typeof page_setup === 'object' &&
+		typeof page_setup.format === 'string' &&
+		typeof page_setup.orientation === 'string') {
+		inst.format = page_setup.format;
+		inst.orientation = page_setup.orientation;
+	}
+	$.each(inst.fabricObjects, function (index, fabricObj) {
+		if (pages.length > index) {
+			var bg = fabricObj.backgroundImage;
+			fabricObj.loadFromJSON(pages[index], function () {
+				inst.fabricObjectsData[index] = fabricObj.toJSON()
+			})
+			fabricObj.setBackgroundImage(bg, fabricObj.renderAll.bind(fabricObj));
 		}
 	})
 }
