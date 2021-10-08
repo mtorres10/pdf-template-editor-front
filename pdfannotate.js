@@ -116,6 +116,9 @@ var PDFAnnotate = function (container_id, url, options = {}) {
 			fabricObj.add(text);
 			inst.active_tool = 0;
 		}
+		var activeObject = inst.fabricObjects[inst.active_canvas].getActiveObject();
+		console.log(activeObject);
+		document.getElementById('sectionField').value = activeObject.top;
 	}
 }
 
@@ -312,6 +315,31 @@ PDFAnnotate.prototype.serializePdf = function (callback) {
 			}
 		});
 	});
+}
+ //Agregado
+PDFAnnotate.prototype.downloadJson = function (callback) {
+	var inst = this;
+	var pageAnnotations = [];
+	var stringJson = "";
+	inst.fabricObjects.forEach(function (fabricObject) {
+		fabricObject.clone(function (fabricObjectCopy) {
+			fabricObjectCopy.setBackgroundImage(null);
+			fabricObjectCopy.setBackgroundColor('');
+			pageAnnotations.push(fabricObjectCopy);
+			if (pageAnnotations.length === inst.fabricObjects.length) {
+				var data = {
+					page_setup: {
+						format: inst.format,
+						orientation: inst.orientation,
+					},
+					pages: pageAnnotations,
+				};
+				callback(JSON.stringify(data));
+				stringJson = (JSON.stringify(data));
+			}
+		});
+	});
+	
 }
 
 PDFAnnotate.prototype.loadFromJSON = function (jsonData) {
