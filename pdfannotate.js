@@ -417,7 +417,7 @@ PDFAnnotate.prototype.loadFromJSON = function (jsonData) {
 	$.each(inst.fabricObjects, function (index, fabricObj) {
 		if (pages.length > index) {
 			fabricObj.loadFromJSON(pages[index], function () {
-				inst.fabricObjectsData[index] = fabricObj.toJSON()
+				inst.fabricObjectsData[index] = fabricObj.toJSON();
 			})
 		}
 	})
@@ -452,7 +452,7 @@ PDFAnnotate.prototype.loadFromJSON2 = function (jsonData) {
 		if (pages.length > index) {
 			var bg = fabricObj.backgroundImage;
 			fabricObj.loadFromJSON(pages[index], function () {
-				inst.fabricObjectsData[index] = fabricObj.toJSON()
+				inst.fabricObjectsData[index] = fabricObj.toJSON();
 			})
 			fabricObj.setBackgroundImage(bg, fabricObj.renderAll.bind(fabricObj));
 		}
