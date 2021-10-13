@@ -2,24 +2,31 @@ var jsonTemplateData = JSON.parse("{}");
 var pdf;
 
 function selectJson() {
+    var parent = document.getElementById("loadJson");
     var input = document.createElement('input');
+    input.setAttribute("id", "inputJson");
     input.type = 'file';
+    input.classList.add("inputPdf");
+    parent.appendChild(input);
     input.onchange = e => {
         var file = e.target.files[0];
         var reader = new FileReader();
         reader.onload = function () {
             jsonTemplateData = JSON.parse(reader.result);
             pdf.loadFromJSON2(jsonTemplateData);
-        }        
-        reader.readAsText(file);        
+        }
+        reader.readAsText(file);
     }
     input.click();
 }
 
 function selectFile() {
+    var parent = document.getElementById("load");
     var input = document.createElement('input');
+    input.setAttribute("id", "inputPdfId");
     input.type = 'file';
-
+    input.classList.add("inputPdf");
+    parent.appendChild(input);
     input.onchange = e => {
         // getting a hold of the file reference
         var file = e.target.files[0];
@@ -35,10 +42,12 @@ function selectFile() {
         reader.readAsArrayBuffer(file);
     }
     input.click();
+    //input.remove();
 }
 
 function load(pdfcontent) {
     var canvasContainers = document.querySelectorAll("[class='canvas-container']");
+    var input = document.getElementById('inputPdfId');
 
     for (i = 0; i < canvasContainers.length; ++i) {
         let canvasContainer = canvasContainers[i];
@@ -51,6 +60,7 @@ function load(pdfcontent) {
         },
         ready() {
             console.log("Plugin initialized successfully");
+            input.remove();
         },
         scale: 1.5,
         pageImageCompression: "MEDIUM", // FAST, MEDIUM, SLOW(Helps to control the new PDF file size)
@@ -58,9 +68,9 @@ function load(pdfcontent) {
 }
 
 function changeActiveTool(event) {
-    var element = $(event.target).hasClass("tool-button")
-        ? $(event.target)
-        : $(event.target).parents(".tool-button").first();
+    var element = $(event.target).hasClass("tool-button") ?
+        $(event.target) :
+        $(event.target).parents(".tool-button").first();
     $(".tool-button.active").removeClass("active");
     $(element).addClass("active");
 }
