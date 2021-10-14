@@ -5,6 +5,7 @@ function selectJson() {
     var parent = document.getElementById("loadJson");
     var input = document.createElement('input');
     input.setAttribute("id", "inputJson");
+    input.setAttribute("accept", "application/JSON");
     input.type = 'file';
     input.classList.add("inputPdf");
     parent.appendChild(input);
@@ -24,6 +25,7 @@ function selectFile() {
     var parent = document.getElementById("load");
     var input = document.createElement('input');
     input.setAttribute("id", "inputPdfId");
+    input.setAttribute("accept", "application/pdf");
     input.type = 'file';
     input.classList.add("inputPdf");
     parent.appendChild(input);
