@@ -164,7 +164,13 @@ function getPdfData() {
 }
 
 function download(text, name, type) {
-    var element = document.createElement('a');
+    var element = document.getElementById("downloadTemplate");
+    
+    if (element == null){
+        element = document.createElement('a');
+        element.setAttribute("id", "downloadTemplate");
+    }
+    
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
     element.setAttribute('download', name);
 
@@ -172,13 +178,6 @@ function download(text, name, type) {
     document.body.appendChild(element);
 
     element.click();
-
-    document.body.removeChild(element);
-    /* var a = document.getElementById("a");
-     var file = new Blob([text], {type: type});
-     a.href = URL.createObjectURL(file);
-     a.download = name;
-     a.click;*/
 }
 
 
