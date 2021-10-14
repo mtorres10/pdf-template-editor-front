@@ -156,6 +156,15 @@ button:focus {
     visibility: hidden;
 }
 
+.coord {
+    height:100vh;
+    width:100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -100;
+}
+
 @media screen and (max-height: 450px) {
     .sidenav {
         padding-top: 15px;
